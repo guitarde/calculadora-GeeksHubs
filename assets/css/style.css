@@ -1,14 +1,12 @@
+html {}
+
 body {
     background-color: rgb(204, 204, 204);
     display: flex;
-    margin: 3em 2em;
     flex-wrap: wrap;
     overflow-x: hidden;
-    height: 100%;
-    width: 100%;
-    background-image: url('../img/fondo2.png');
-    background-repeat: no-repeat;
-    background-size: cover
+    background: url('../img/fondo2.png') no-repeat fixed;
+    background-size: cover;
 }
 
 h1 {
