@@ -11,7 +11,7 @@ let operaciones = {
         return a - b;
     },
     dividir: (a, b) => {
-        if (b === 0) return;
+        if (b === 0) return false;
         return a / b
     },
     multiplicar: (a, b) => {
@@ -56,7 +56,7 @@ function calcular() {
 
     let opArray = inputEle.value.split(signoOP);
 
-    realizarOperacionesAleatorio(+opArray[0], opArray[1], signoOP);
+    realizarOperacionesAleatorio(signoOP, +opArray[0], opArray[1]);
 
     borrarOperaciones();
 }
@@ -77,8 +77,9 @@ function borrarCaracteres() {
     inputEle.value = inputEle.value.slice(0, -1);
 }
 
-function realizarOperacionesAleatorio(valorA, valorB, op) {
+function realizarOperacionesAleatorio(op, valorA, valorB) {
 
+    if (valorB === "") valorB = 0;
     switch (op) {
         case '+':
             historicoEle.value += +valorA + '+' + valorB + " = " + operaciones.suma(+valorA, valorB) + '\n';
@@ -89,7 +90,10 @@ function realizarOperacionesAleatorio(valorA, valorB, op) {
             break;
 
         case '/':
-            historicoEle.value += valorA + '/' + valorB + " = " + operaciones.dividir(valorA, valorB) + '\n';
+            var valor = operaciones.dividir(valorA, valorB);
+            if (!valor)
+                return;
+            historicoEle.value += valorA + '/' + valorB + " = " + valor + '\n';
             break;
 
         case '*':
