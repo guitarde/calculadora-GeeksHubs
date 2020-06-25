@@ -5,7 +5,7 @@ let signoOperaciones = ['+', '-', '*', '/'];
 
 let operaciones = {
     suma: (a, b) => {
-        return +a + b;
+        return Number(a) + Number(b);
     },
     resta: (a, b) => {
         return a - b;
@@ -50,15 +50,41 @@ function reemplazarSignoOperacion(signo) {
 
 }
 
-function calcular() {
 
-    const signoOP = signoOperaciones.find(v => inputEle.value.indexOf(v) >= 0);
+function calcularVariasOperaciones() {
+    var arrayNumero = [];
+    var arraySigno = [];
+    var digito = '';
+    var ope = inputEle.value;
+    var result = 0;
+    [...ope].forEach(e => {
+        if (e === '+' || e === '-' || e === '/' || e === '*') {
+            arrayNumero.push(digito);
+            arraySigno.push(e);
+            digito = '';
+        } else {
+            digito += e;
+        }
+    });
+    arrayNumero.push(digito);
+    for (var i = 0; i < arrayNumero.length - 1; i++) {
+        arrayNumero[i + 1] = realizarOperacionesAleatorio(arraySigno[i], arrayNumero[i], arrayNumero[i + 1]);
+    }
+
+    historicoEle.value += ope + ' = ' + arrayNumero[arrayNumero.length - 1] + '\n';
+    borrarOperaciones();
+}
+
+function calcular() {
+    calcularVariasOperaciones();
+
+    /*const signoOP = signoOperaciones.find(v => inputEle.value.indexOf(v) >= 0);
 
     let opArray = inputEle.value.split(signoOP);
 
-    realizarOperacionesAleatorio(signoOP, +opArray[0], opArray[1]);
+    realizarOperacionesAleatorio(signoOP, opArray[0], opArray[1]);
 
-    borrarOperaciones();
+     borrarOperaciones();*/
 }
 
 
@@ -79,29 +105,36 @@ function borrarCaracteres() {
 
 function realizarOperacionesAleatorio(op, valorA, valorB) {
 
+    var result = '';
     if (valorB === "") valorB = 0;
     switch (op) {
         case '+':
-            historicoEle.value += +valorA + '+' + valorB + " = " + operaciones.suma(+valorA, valorB) + '\n';
+            //historicoEle.value += +valorA + '+' + valorB + " = " + operaciones.suma(+valorA, valorB) + '\n';
+            result = operaciones.suma(+valorA, valorB);
             break;
 
         case '-':
-            historicoEle.value += valorA + '-' + valorB + " = " + operaciones.resta(valorA, valorB) + '\n';
+            //historicoEle.value += valorA + '-' + valorB + " = " + operaciones.resta(valorA, valorB) + '\n';
+            result = operaciones.resta(valorA, valorB);
             break;
 
         case '/':
             var valor = operaciones.dividir(valorA, valorB);
             if (!valor)
                 return;
-            historicoEle.value += valorA + '/' + valorB + " = " + valor + '\n';
+            //historicoEle.value += valorA + '/' + valorB + " = " + valor + '\n';
+            result = operaciones.dividir(valorA, valorB);
             break;
 
         case '*':
-            historicoEle.value += valorA + '*' + valorB + " = " + operaciones.multiplicar(valorA, valorB) + '\n';
+            //historicoEle.value += valorA + '*' + valorB + " = " + operaciones.multiplicar(valorA, valorB) + '\n';
+            result = operaciones.multiplicar(valorA, valorB);
             break;
 
         default:
-            historicoEle.value += valorA + '\n';
+            // result = historicoEle.value += valorA + '\n';
             break;
+
     }
+    return result;
 }
